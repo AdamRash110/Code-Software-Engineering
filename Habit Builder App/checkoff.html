@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-Off Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #ffeb3b;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>Check-Off Your Habits</h1>
+    <ul id="habit-list"></ul>
+
+    <script>
+        function loadHabits() {
+            let savedHabits = JSON.parse(localStorage.getItem("habits")) || [];
+            let habitList = document.getElementById("habit-list");
+
+            savedHabits.forEach(habit => {
+                let listItem = document.createElement("li");
+                listItem.textContent = habit.text;
+                if (habit.completed) {
+                    listItem.style.textDecoration = "line-through";
+                }
+                habitList.appendChild(listItem);
+            });
+        }
+        
+        window.onload = loadHabits;
+    </script>
+</body>
+</html>

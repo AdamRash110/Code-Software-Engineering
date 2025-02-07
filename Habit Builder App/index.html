@@ -3,30 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit Builder App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        #habit-form {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #ffeb3b;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #xp-display {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff5722;
+        }
+        .info-text {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .page-link {
+            margin-top: 20px;
+            display: block;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .page-link:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Habit Builder App</h1>
-
-        <div class="habit-form">
-            <input type="text" id="habitInput" placeholder="Enter your habit">
-            <button id="addHabitButton">Add Habit</button>
+        <h1>Habit Tracker</h1>
+        <p class="info-text">Enter your habits to earn XP and stay on track every day!</p>
+        <div id="habit-form">
+            <input type="text" id="habit-input" placeholder="Enter a new habit">
+            <button onclick="addHabit()">Add Habit</button>
         </div>
-
-        <div class="habit-list">
-            <h2>Your Habits</h2>
-            <ul id="habitList">
-                <!--Habit items added here (finish tomorrow)-->
-            </ul>
-        </div>
-
-        <div class="xp-section">
-            <p>XP: <span id="xpAmount">0</span></p>
-        </div>
+        <ul id="habit-list"></ul>
+        <div id="xp-display">XP: 0</div>
+        <a href="checkoff.html" class="page-link">Go to Check-Off Page</a>
     </div>
+    <script>
+        let xp = 0;
+        function loadHabits() {
+            let savedHabits = JSON.parse(localStorage.getItem("habits")) || [];
+            savedHabits.forEach(habit => {
+                addHabitToList(habit.text, habit.completed);
+            });
+        }
 
-    <script src="script.js"></script>
+        function addHabit() {
+            let habitInput = document.getElementById("habit-input");
+            let habitText = habitInput.value.trim();
+            if (habitText === "") return;
+            let savedHabits = JSON.parse(localStorage.getItem("habits")) || [];
+            savedHabits.push({ text: habitText, completed: false });
+            localStorage.setItem("habits", JSON.stringify(savedHabits));
+
+            addHabitToList(habitText, false);
+
+            habitInput.value = "";
+        }
+
+        function addHabitToList(habitText, completed) {
+            let habitList = document.getElementById("habit-list");
+            let listItem = document.createElement("li");
+            listItem.textContent = habitText;
+            let checkButton = document.createElement("button");
+            checkButton.textContent = completed ? "✔ (Completed)" : "✔";
+            checkButton.onclick = function () {
+                let savedHabits = JSON.parse(localStorage.getItem("habits"));
+                let habitIndex = savedHabits.findIndex(habit => habit.text === habitText);
+                savedHabits[habitIndex].completed = true;
+                localStorage.setItem("habits", JSON.stringify(savedHabits));
+                xp += 10;
+                document.getElementById("xp-display").textContent = "XP: " + xp;
+                checkButton.textContent = "✔ (Completed)";
+                listItem.style.textDecoration = "line-through";
+            };
+            listItem.appendChild(checkButton);
+            habitList.appendChild(listItem);
+        }
+
+        window.onload = loadHabits;
+        setInterval(() => {
+            alert("Reminder: Don't forget to check your habits!");
+        }, 21600000);
+    </script>
 </body>
 </html>
