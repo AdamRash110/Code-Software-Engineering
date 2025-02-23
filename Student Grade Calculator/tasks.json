@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",  // Use g++ to compile C++ code
+            "args": [
+                "-g",
+                "GradeCalculator.cpp",  // Your C++ file name
+                "-o",
+                "GradeCalculator.out"  // Output executable
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Generated task for C++ code"
+        }
+    ]
+}

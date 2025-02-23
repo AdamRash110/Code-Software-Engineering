@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run C++ Program",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/GradeCalculator.out",  // Path to your output executable
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/path/to/gdb",  // Replace with path to gdb if needed
+            "externalConsole": true,
+            "preLaunchTask": "build",
+            "miDebuggerArgs": "",
+            "sourceFileMap": {
+                "/mnt/c/": "C:\\"
+            }
+        }
+    ]
+}
